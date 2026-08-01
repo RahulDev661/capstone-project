@@ -1,0 +1,16 @@
+---
+description: Core project conventions for capstone-project
+alwaysApply: true
+---
+
+# capstone-project
+
+Node.js internship capstone project.
+
+## Conventions
+
+- Use Conventional Commits for all commits
+- Prefer async/await over .then() chains
+- Write tests alongside new features in `/tests`
+- Keep functions small and single-purpose
+- Never commit secrets (`.env`); document variables in `.env.example`
