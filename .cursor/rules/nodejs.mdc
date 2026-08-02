@@ -1,0 +1,109 @@
+---
+description: Node.js development conventions
+globs: **/*.{js,ts}
+alwaysApply: false
+---
+
+# Node.js Development
+
+## Modern JavaScript
+
+- Use `const` by default; use `let` only when reassignment is required
+- Never use `var`
+- Prefer ES modules (`import` / `export`) when the project supports them
+- Use optional chaining (`?.`) and nullish coalescing (`??`) where appropriate
+
+```javascript
+// ✅ GOOD
+const user = await getUser();
+const city = user?.address?.city ?? "Unknown";
+```
+
+## Async Programming
+
+- Use `async/await` only — avoid `.then()` / `.catch()` chains
+- Handle asynchronous errors using `try/catch`
+- Never block the event loop with synchronous operations unless absolutely necessary
+
+```javascript
+// ✅ GOOD
+async function getUsers() {
+  try {
+    return await User.find();
+  } catch (err) {
+    throw err;
+  }
+}
+```
+
+## Project Structure
+
+- Keep modules focused on a single responsibility
+- Separate routes, controllers, services, models, middleware, and utilities
+- Avoid circular dependencies
+- Reuse utility functions instead of duplicating code
+
+## Code Quality
+
+- Write small, readable, and reusable functions
+- Prefer early returns over deeply nested conditionals
+- Use descriptive variable and function names
+- Keep files organized and easy to navigate
+
+```javascript
+// ✅ GOOD
+if (!user) {
+  return null;
+}
+
+return user;
+```
+
+## Error Handling
+
+- Throw meaningful Error objects
+- Never silently ignore exceptions
+- Log errors with sufficient context
+- Return user-friendly messages without exposing internal implementation
+
+```javascript
+throw new Error("Invalid user ID");
+```
+
+## Environment Variables
+
+- Store secrets in `.env`
+- Never hardcode API keys, tokens, passwords, or credentials
+- Document all required variables in `.env.example`
+
+```env
+PORT=5000
+MONGODB_URI=
+JWT_SECRET=
+```
+
+## Security
+
+- Validate and sanitize all external input
+- Never trust client data
+- Use environment variables for sensitive configuration
+- Avoid exposing stack traces in production
+
+## Performance
+
+- Prefer asynchronous filesystem APIs
+- Avoid unnecessary loops and repeated database calls
+- Cache expensive computations when appropriate
+- Stream large files instead of loading them fully into memory
+
+## Logging
+
+- Log important application events
+- Include timestamps and context in logs
+- Never log passwords, authentication tokens, or sensitive user data
+
+## Testing
+
+- Write unit tests for reusable modules
+- Mock external services during testing
+- Keep business logic easy to test by avoiding unnecessary side effects
