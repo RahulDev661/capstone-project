@@ -1,0 +1,67 @@
+---
+description: Express.js REST API conventions
+globs: **/{routes,controllers,services,middleware}/**/*.{js,ts}
+alwaysApply: false
+---
+
+# Express.js REST API
+
+## Async/await
+
+- Use `async/await` only — never `.then()` / `.catch()` chains
+- Wrap async route handlers so errors reach Express error middleware
+
+```javascript
+// ✅ GOOD
+router.get('/users/:id', async (req, res, next) => {
+  try {
+    const user = await userService.getById(req.params.id);
+    res.status(200).json({ success: true, data: user });
+  } catch (err) {
+    next(err);
+  }
+});
+```
+
+## Validation
+
+- Validate `req.body`, `req.params`, and `req.query` in middleware **before** the controller runs
+- Return `400` with a clear message when validation fails; do not run business logic on invalid input
+
+## Controllers and services
+
+- **Controllers**: parse request, call service, send response — no DB queries or business rules
+- **Services**: business logic, data access, and reusable operations
+- Keep controllers thin; move logic to `services/`
+
+## JSON responses
+
+Use a consistent shape:
+
+```javascript
+// Success
+{ "success": true, "data": { ... } }
+
+// Error
+{ "success": false, "error": { "message": "...", "code": "VALIDATION_ERROR" } }
+```
+
+## HTTP status codes
+
+| Code | Use |
+|------|-----|
+| `200` | GET success, PUT/PATCH update success |
+| `201` | POST created |
+| `204` | DELETE success (no body) |
+| `400` | Validation / bad request |
+| `401` | Not authenticated |
+| `403` | Forbidden |
+| `404` | Resource not found |
+| `409` | Conflict (duplicate, state conflict) |
+| `500` | Unexpected server error (never leak stack traces to clients) |
+
+## Error handling
+
+- Pass errors to Express via `next(err)` — do not send `500` inline in every route
+- Use centralized error middleware to map known errors to status codes and JSON responses
+- Log full error details server-side; return safe messages to clients
