@@ -11,4 +11,4 @@ Project conventions live in `.cursor/rules/` and guide the Cursor AI agent:
 - **`express.mdc`** — REST API conventions for routes, controllers, services, and middleware
 - **`mongodb.mdc`** — MongoDB/Mongoose conventions for models and data access
 <br><br><br>
-  https://github.com/RahulDev661/capstone-project/blob/77372536f60f395b57bae390e599c7f5dfc3660f/Screenshot%202026-08-03%20233944.png
+ <img src="https://github.com/RahulDev661/capstone-project/blob/77372536f60f395b57bae390e599c7f5dfc3660f/Screenshot%202026-08-03%20233944.png" alt="Alternative Text" width="500"> 
