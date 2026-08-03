@@ -1,0 +1,49 @@
+---
+description: MongoDB and Mongoose conventions
+globs: **/{models,services,repositories,db}/**/*.{js,ts}
+alwaysApply: false
+---
+
+# MongoDB
+
+## Connection
+
+- Connect once at app startup; reuse a single connection pool
+- Read the URI from environment variables — never hardcode credentials
+- Handle connection errors at startup and exit or retry with backoff
+
+## Schemas and models
+
+- Define schemas in `models/`; one model per collection
+- Set `timestamps: true` for `createdAt` / `updatedAt` where appropriate
+- Add schema-level validation (required fields, enums, min/max) — do not rely on controllers alone
+- Use explicit field types; avoid storing unstructured blobs when a schema fits
+
+## Queries
+
+- Use `async/await` with Mongoose — no callback-style queries
+- Prefer `.lean()` for read-only responses that do not need Mongoose document methods
+- Select only needed fields with `.select()` — avoid returning full documents by default
+- Use `.populate()` sparingly; prefer aggregation or explicit joins when queries get deep
+
+## Indexes
+
+- Add indexes for fields used in filters, sorts, and unique constraints
+- Define indexes in the schema or a dedicated migration/script — do not rely on auto-indexing in production
+
+## Data access layer
+
+- Keep DB queries in services or repositories — not in route handlers
+- Return plain objects or DTOs to controllers; do not leak Mongoose documents unless needed
+
+## Error handling
+
+- Catch and map common MongoDB errors in the service layer:
+  - `11000` duplicate key → throw a conflict error (`409`)
+  - Invalid `ObjectId` → throw a not-found or bad-request error
+- Never expose raw MongoDB error messages or connection strings to API clients
+
+## Security
+
+- Never log full documents containing passwords, tokens, or PII
+- Sanitize user input before using it in queries — prefer parameterized queries; avoid string-built query objects from raw user input
