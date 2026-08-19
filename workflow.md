@@ -1,0 +1,1 @@
+The experiment showed that the value was not simply generated code quality. The precise workflow reduced uncertainty by giving the model project context, explicit constraints, expected behavior, and a verification loop. Although Round 2 required more upfront prompting, it reduced downstream review and fixing effort.
