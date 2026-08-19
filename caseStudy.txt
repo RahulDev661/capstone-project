@@ -1,0 +1,35 @@
+PORTFOLIO CASE STUDIES
+
+Voice Card
+"Direct, clear, practical, confident, human, no buzzwords."
+
+Bio :CSE (Data Science) student, currently juggling 3 projects, and leaning frontend-heavy with JS and React.
+
+CASE STUDY 1 — [SafeBite - The food safety app]
+
+AI:what problem is it actually solving?
+Me:The problem was that many food products may be adulterated, and people often don't know which products are safe and reliable. We built SafeBite to help users identify better-quality foods through lab testing, public knowledge, ratings, and community feedback. It also provides simple techniques to help users check whether certain foods may be adulterated.
+
+Ai:what's your tech stack for this, and what's your specific role in the team? Frontend only, or are you touching the data or    backend side too?
+Me: Pure frontend on this one.
+
+Ai:what does React look like for you here? Are you handling things like state management for ratings and reviews, API integration with the backend, or mostly building out UI components and layouts?
+Me:UI components, building layouts, and post dealings, like, API callings also.
+
+Ai:What third-party APIs are you hitting for SafeBite? Is that for things like barcode lookup, nutrition data, or something else entirely?
+Me:Oh nice, so it's actually vision-based — camera scan feeding into an AI model that assesses the food visually, not just barcode lookup. That's a meatier feature than I expected.
+
+
+CASE STUDY 2 — [a portfolio site]
+Ai:What's the goal with it beyond just "having a portfolio"? Like, is this meant to land a specific type of job or internship, or is it more of a general showcase for whatever comes your way?
+Me:Yep. I am basically showing that that there are mine works that I have done with the many clients or the many problems that I solved, like API react routers and many problems that I faced while making any websites, like like many things, use effective working and performance problems and validation problems, error messages, password mismatching, and authentication errors. like that.
+
+Ai:Are you writing these up as case studies for each project — like, problem, what you tried, what worked — or is it more just a project list with tech tags and links?
+Me:Yep. I am writing like that. 
+
+CASE STUDY 3 — [A construction company website]
+AI:What's the scope on that one? Is it mainly a marketing site to showcase their work and get leads, or does it need functional stuff too, like quote requests, project galleries, or a contact-to-booking flow?
+Me:We’re building a construction project platform with 2–3 main features. Users can enter their home requirements, and APIs calculate the required cement, rods, sand, stones, and other materials. Another API estimates the total project cost. We also suggest suitable products available in the market while promoting our own services/products to make the platform sustainable.
+
+Ai:Quick one: are you building that estimator logic yourself in the frontend, or is that hitting a backend API that does the actual calculation?
+Me:We’re building the estimator logic ourselves in the backend. It handles user input, data validation, base-cost calculation, additions, taxes, estimates, and other dynamic calculations.
