@@ -1,0 +1,463 @@
+# Prompt Ladder — Construction Cost Estimator Backend
+
+## Task Selected
+
+Build backend logic for a construction cost estimator that accepts user inputs, validates the data, calculates a base cost, applies additions and adjustments, and returns an estimated total.
+
+---
+
+# Run 1 — Weak Baseline
+
+### Prompt
+
+> Build backend code for a construction cost estimator.
+
+### Layer Added
+
+**None — baseline**
+
+### Representative Output
+
+> Here is a basic Node.js/Express implementation:
+>
+> ```js
+> app.post("/estimate", (req, res) => {
+>   const { area, material, labor } = req.body;
+>   const cost = area * material + labor;
+>   res.json({ estimatedCost: cost });
+> });
+> ```
+>
+> The endpoint accepts construction details and calculates an estimated cost.
+
+### Notes
+
+**What changed:**
+Nothing. This is the intentionally weak starting prompt.
+
+**What improved in the output:**
+Nothing specific. The output was generic but at least produced a starting implementation.
+
+**What still failed:**
+It did not define what inputs are required, how validation works, how different materials affect price, or how additional costs should be calculated. It also assumed a simplistic formula.
+
+**What I would try next:**
+Define the actual goal of the estimator so the AI knows what the backend must accomplish.
+
+---
+
+# Run 2 — Clearer Goal
+
+### Prompt
+
+> Build backend logic for a construction cost estimator that takes construction details from a user, validates the input, calculates a base construction cost, applies additional costs, and returns a final estimated cost.
+
+### Layer Added
+
+**Clearer goal**
+
+### Representative Output
+
+> The backend should follow these steps:
+>
+> 1. Receive construction details.
+> 2. Validate the submitted data.
+> 3. Calculate the base construction cost.
+> 4. Apply additional costs.
+> 5. Return the final estimated cost.
+>
+> Example:
+>
+> ```js
+> const baseCost = area * ratePerSqFt;
+> const finalCost = baseCost + additionalCosts;
+> ```
+
+### Notes
+
+**What changed:**
+I explicitly defined what the estimator needs to accomplish.
+
+**What improved in the output:**
+The response stopped treating the estimator as just a multiplication formula and started describing the complete calculation flow from input to final estimate.
+
+**What still failed:**
+The AI still did not know what kind of construction project this was, what inputs were available, or how the additional costs should work.
+
+**What I would try next:**
+Add real project context so the calculations are based on realistic requirements.
+
+---
+
+# Run 3 — Real Context
+
+### Prompt
+
+> Build backend logic for a construction cost estimator that takes construction details from a user, validates the input, calculates a base construction cost, applies additional costs, and returns a final estimated cost.
+>
+> The estimator is for a construction-related web application. The user may provide built-up area, construction type, material quality, number of floors, and optional additions such as electrical, plumbing, painting, and other work.
+
+### Layer Added
+
+**Real context**
+
+### Representative Output
+
+> The estimator can use:
+>
+> * Built-up area
+> * Construction type
+> * Material quality
+> * Number of floors
+> * Optional electrical cost
+> * Optional plumbing cost
+> * Optional painting cost
+>
+> A possible calculation is:
+>
+> ```js
+> const baseCost = area * constructionRate;
+> const total =
+>   baseCost +
+>   electricalCost +
+>   plumbingCost +
+>   paintingCost;
+> ```
+>
+> Input validation should ensure that area and number of floors are positive values.
+
+### Notes
+
+**What changed:**
+I added the real application context and possible estimator inputs.
+
+**What improved in the output:**
+The AI started producing a calculation structure that matches an actual construction estimator instead of a generic example.
+
+**What still failed:**
+The response invented simplistic calculations and did not clearly separate validation, base-rate selection, additions, and final estimation. The extra context helped, but it also made the answer longer without automatically making the logic correct.
+
+**What I would try next:**
+Specify exactly how I want the response organized so I can evaluate the backend logic more easily.
+
+---
+
+# Run 4 — Specified Output Format
+
+### Prompt
+
+> Build backend logic for a construction cost estimator that takes construction details from a user, validates the input, calculates a base construction cost, applies additional costs, and returns a final estimated cost.
+>
+> The estimator is for a construction-related web application. The user may provide built-up area, construction type, material quality, number of floors, and optional additions such as electrical, plumbing, painting, and other work.
+>
+> Structure your response in exactly these sections:
+>
+> 1. Input fields
+> 2. Validation rules
+> 3. Calculation logic
+> 4. API response
+> 5. JavaScript implementation
+
+### Layer Added
+
+**Specified output format**
+
+### Representative Output
+
+> ## 1. Input fields
+>
+> * area
+> * constructionType
+> * materialQuality
+> * floors
+> * electrical
+> * plumbing
+> * painting
+>
+> ## 2. Validation rules
+>
+> * Area must be greater than 0.
+> * Floors must be a positive integer.
+> * Construction type must be supported.
+>
+> ## 3. Calculation logic
+>
+> ```js
+> const baseCost = area * ratePerSqFt;
+> const total = baseCost + electrical + plumbing + painting;
+> ```
+>
+> ## 4. API response
+>
+> ```json
+> {
+>   "estimatedCost": 1250000
+> }
+> ```
+>
+> ## 5. JavaScript implementation
+>
+> ```js
+> // implementation
+> ```
+
+### Notes
+
+**What changed:**
+I specified the required response structure.
+
+**What improved in the output:**
+The output became much easier to inspect. I could immediately see the inputs, validation, calculation, API response, and implementation separately.
+
+**What still failed:**
+This change improved readability more than correctness. The underlying calculation was still too simplistic, so this was useful for evaluation but did not solve the main logic problem.
+
+**What I would try next:**
+Add explicit constraints that prevent the AI from inventing unsupported calculations and require clear handling of invalid data.
+
+---
+
+# Run 5 — Constraints
+
+### Prompt
+
+> Build backend logic for a construction cost estimator that takes construction details from a user, validates the input, calculates a base construction cost, applies additional costs, and returns a final estimated cost.
+>
+> The estimator is for a construction-related web application. The user may provide built-up area, construction type, material quality, number of floors, and optional additions such as electrical, plumbing, painting, and other work.
+>
+> Structure your response in exactly these sections:
+>
+> 1. Input fields
+> 2. Validation rules
+> 3. Calculation logic
+> 4. API response
+> 5. JavaScript implementation
+>
+> **Constraints:**
+>
+> * Do not invent database values or external APIs.
+> * Keep the calculation logic in separate functions.
+> * Reject missing, negative, or invalid numeric inputs.
+> * Do not silently replace invalid values with defaults.
+> * Keep the estimator deterministic.
+> * Clearly identify assumptions instead of presenting them as real-world facts.
+
+### Layer Added
+
+**Constraints**
+
+### Representative Output
+
+> ## Validation
+>
+> ```js
+> function validateInput(data) {
+>   if (!data.area || data.area <= 0) {
+>     throw new Error("Area must be greater than 0");
+>   }
+>
+>   if (!Number.isInteger(data.floors) || data.floors <= 0) {
+>     throw new Error("Floors must be a positive integer");
+>   }
+> }
+> ```
+>
+> ## Calculation
+>
+> ```js
+> function calculateBaseCost(area, rate) {
+>   return area * rate;
+> }
+>
+> function applyAdditions(baseCost, additions) {
+>   return baseCost + additions;
+> }
+> ```
+>
+> The implementation does not invent external pricing data and keeps assumptions explicit.
+
+### Notes
+
+**What changed:**
+I added constraints controlling validation, assumptions, external data, and function structure.
+
+**What improved in the output:**
+The implementation became safer and more predictable. Invalid values were explicitly rejected instead of being silently accepted, and the calculation was broken into reusable functions.
+
+**What still failed:**
+The AI still did not prove that the implementation actually works. It described validation and calculation but did not demonstrate edge cases or test the complete estimator flow.
+
+**What I would try next:**
+Add quality criteria and verification requirements so the AI has to check its own implementation.
+
+---
+
+# Run 6 — Quality Criteria + Verification
+
+### Prompt
+
+> Build backend logic for a construction cost estimator that takes construction details from a user, validates the input, calculates a base construction cost, applies additional costs, and returns a final estimated cost.
+>
+> The estimator is for a construction-related web application. The user may provide built-up area, construction type, material quality, number of floors, and optional additions such as electrical, plumbing, painting, and other work.
+>
+> Structure your response in exactly these sections:
+>
+> 1. Input fields
+> 2. Validation rules
+> 3. Calculation logic
+> 4. API response
+> 5. JavaScript implementation
+> 6. Tests
+> 7. Assumptions
+>
+> **Constraints:**
+>
+> * Do not invent database values or external APIs.
+> * Keep validation and calculation logic in separate functions.
+> * Reject missing, negative, or invalid numeric inputs.
+> * Do not silently replace invalid values with defaults.
+> * Keep the estimator deterministic.
+> * Clearly identify assumptions.
+>
+> **Quality criteria:**
+>
+> * Inputs must be validated before calculation.
+> * Base cost and additions must be calculated separately.
+> * Functions should have clear responsibilities.
+> * Errors should be understandable to the API consumer.
+> * The final estimate should be reproducible for the same input.
+>
+> **Verification requirement:**
+> After writing the implementation, create tests for valid input, missing input, invalid numeric input, and an estimate containing multiple additions. Check that the expected results match the implementation.
+
+### Layer Added
+
+**Quality criteria + verification requirements**
+
+### Representative Output
+
+> ## Calculation flow
+>
+> ```js
+> function calculateBaseCost(area, rate) {
+>   return area * rate;
+> }
+>
+> function calculateAdditions(additions) {
+>   return Object.values(additions).reduce(
+>     (total, value) => total + value,
+>     0
+>   );
+> }
+>
+> function calculateEstimate(data, rate) {
+>   validateInput(data);
+>
+>   const baseCost = calculateBaseCost(data.area, rate);
+>   const additions = calculateAdditions(data.additions);
+>
+>   return {
+>     baseCost,
+>     additions,
+>     total: baseCost + additions
+>   };
+> }
+> ```
+>
+> ## Tests
+>
+> ```js
+> test("calculates a valid estimate", () => {
+>   const result = calculateEstimate(
+>     {
+>       area: 1000,
+>       additions: {
+>         electrical: 50000,
+>         plumbing: 30000
+>       }
+>     },
+>     1500
+>   );
+>
+>   expect(result.total).toBe(1580000);
+> });
+> ```
+>
+> Additional tests verify missing area, negative values, and multiple additions.
+>
+> ## Assumptions
+>
+> The rate supplied to the calculation is treated as an input rather than an invented real-world market price.
+
+### Notes
+
+**What changed:**
+I added explicit quality criteria and required the AI to verify the implementation with tests.
+
+**What improved in the output:**
+The response became much more implementation-focused. It separated base cost from additions, returned useful calculation details, and included tests for both successful and invalid cases. The assumptions were also clearly separated from actual application logic.
+
+**What still failed:**
+The example still needs to be integrated with the project's actual backend structure, existing functions, and real pricing configuration before being used in production.
+
+**What I would try next:**
+Give the final prompt to another developer or AI agent with the actual project files and ask it to integrate the estimator rather than generating isolated example code.
+
+---
+
+# Comparison
+
+| Run | Layer Added            | Main Output Improvement                                                 |
+| --- | ---------------------- | ----------------------------------------------------------------------- |
+| 1   | Baseline               | Produced only a generic starting implementation                         |
+| 2   | Clearer goal           | Created a complete input → validation → calculation → result flow       |
+| 3   | Real context           | Used construction-specific inputs and additions                         |
+| 4   | Output format          | Made the response much easier to inspect and evaluate                   |
+| 5   | Constraints            | Prevented unsafe assumptions and improved validation/function structure |
+| 6   | Quality + verification | Added measurable quality criteria and tests                             |
+
+## Biggest Lesson
+
+The biggest improvement did not come from simply making the prompt longer. The most valuable changes were the ones that **reduced ambiguity about what "correct" means**.
+
+The output-format change made the response easier to read, but it did not substantially improve the underlying logic. The constraints and verification requirements produced a much more reliable result because they directly controlled implementation quality.
+
+---
+
+# Final Reusable Prompt
+
+> Build backend logic for a construction cost estimator that accepts construction details from a user, validates the input, calculates a base construction cost, applies additional costs, and returns a final estimated cost.
+>
+> The estimator is for a construction-related web application. Users may provide built-up area, construction type, material quality, number of floors, and optional additions such as electrical, plumbing, painting, and other work.
+>
+> Structure the response in these sections:
+>
+> 1. Input fields
+> 2. Validation rules
+> 3. Calculation logic
+> 4. API response
+> 5. JavaScript implementation
+> 6. Tests
+> 7. Assumptions
+>
+> Requirements:
+>
+> * Validate all user input before calculation.
+> * Reject missing, negative, or invalid numeric values.
+> * Do not silently replace invalid values with defaults.
+> * Keep validation, base-cost calculation, additions, and final estimation in separate functions.
+> * Do not invent database values, external APIs, or real-world pricing data.
+> * Treat pricing/rates as supplied configuration or input.
+> * Keep the calculation deterministic.
+> * Return clear errors that an API consumer can understand.
+> * Clearly separate assumptions from implementation.
+>
+> After implementing the estimator, write tests covering:
+>
+> * valid input
+> * missing required input
+> * invalid/negative input
+> * multiple additions
+> * final total calculation
+>
+> Verify that the expected test results match the implementation. If any requirement cannot be implemented from the information provided, state the missing assumption instead of inventing it.
