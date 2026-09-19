@@ -1,0 +1,28 @@
+import type { MessageRole } from "../types/chat";
+
+const API_URL ="http://localhost:5000";
+
+export interface OutgoingMessage {
+  role: MessageRole;
+  content: string;
+}
+
+/**
+ * Sends the full conversation history to the backend's /api/chat
+ * endpoint and returns the assistant's reply text.
+ */
+export async function sendMessage(messages: OutgoingMessage[]): Promise<string> {
+  const res = await fetch(`${API_URL}/api/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ messages }),
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error ?? `Request failed with status ${res.status}`);
+  }
+
+  const data = await res.json();
+  return data.reply as string;
+}
