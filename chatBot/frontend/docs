@@ -1,0 +1,45 @@
+# Streaming Personal AI Assistant
+
+## Preview
+
+https://frontend-rho-ashen-g40jrn37cz.vercel.app/
+
+## Source Code
+
+https://github.com/RahulDev661
+
+## Route Handler
+
+https://github.com/RahulDev661/capstone-project/tree/main/chatBot/backend
+
+
+
+## Implementation
+
+Built a personal AI assistant using React, TypeScript, Node.js/Express, and the Groq API.
+
+The application supports:
+
+* Token-by-token streaming responses
+* Thinking indicator before the first streamed token
+* Stop generation during an active response
+* Multi-turn conversation history
+* Separate user and assistant messages
+* Smart auto-scroll that does not override manual scrolling
+* Mobile-friendly chat input and layout
+* Server-side API key protection
+* Centralized AI system prompt and model configuration
+
+## Security
+
+The Groq API key is stored server-side in an environment variable and is never exposed to the frontend.
+
+## Verification
+
+The deployed application was tested for:
+
+* Streaming responses
+* Mid-generation cancellation
+* Multiple conversation turns
+* Server-side API key protection
+* Phone-width usability
